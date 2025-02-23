@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-warning text-dark text-center">
+            <h2 class="mb-0">Reassign Employees from {{ department.dept_name }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <h4 class="alert-heading">ℹ Instructions</h4>
+                <p>Select a new department to reassign all employees from <strong>{{ department.dept_name }}</strong>.</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="new_department" class="form-label">Select New Department</label>
+                    <select class="form-select" id="new_department" name="new_department" required>
+                        <option value="">Choose a department...</option>
+                        {% for dept in departments %}
+                            {% if dept.dept_id != department.dept_id %}
+                            <option value="{{ dept.dept_id }}">{{ dept.dept_name }}</option>
+                            <button type="button" class="btn btn-info btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#employeeModal{{ dept.dept_id }}">
+                                <i class="bi bi-eye"></i> View Employees
+                            </button>
+
+
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'departments:dashboard' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-exchange-alt me-2"></i>Reassign Employees
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% for dept in departments %}
+<div class="modal fade" id="employeeModal{{ dept.dept_id }}" tabindex="-1" aria-labelledby="employeeModalLabel{{ dept.dept_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeModalLabel{{ dept.dept_id }}">Employees in {{ dept.dept_name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in dept.employee_set.all %}
+                        <tr>
+                            <td>{{ employee.full_name }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td>{{ employee.email }}</td>
+                            <td>{{ employee.phone }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
+        <h2 class="text-center mb-4">{% if form.instance.pk %}Edit{% else %}Add{% endif %} Employee</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.first_name.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    {{ form.first_name|add_class:"form-control"|attr:"placeholder:Enter first name" }}
+                </div>
+                <div class="text-danger">{{ form.first_name.errors }}</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.last_name.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    {{ form.last_name|add_class:"form-control"|attr:"placeholder:Enter last name" }}
+                </div>
+                <div class="text-danger">{{ form.last_name.errors }}</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.position.label }}</label>
+                {{ form.position|add_class:"form-select" }}
+                <div class="text-danger">{{ form.position.errors }}</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.email.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    {{ form.email|add_class:"form-control"|attr:"placeholder:Enter email" }}
+                </div>
+                <div class="text-danger">{{ form.email.errors }}</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.phone.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                    {{ form.phone|add_class:"form-control"|attr:"placeholder:Enter phone number" }}
+                </div>
+                <div class="text-danger">{{ form.phone.errors }}</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.department.label }}</label>
+                {{ form.department|add_class:"form-select" }}
+                <div class="text-danger">{{ form.department.errors }}</div>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

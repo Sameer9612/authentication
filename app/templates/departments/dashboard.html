@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <div class="card shadow-lg p-4 rounded-4 bg-white text-dark border border-secondary">
+        <h2 class="text-center mb-4 text-dark fw-bold bg-warning py-3 rounded-3">
+            <i class="bi bi-building"></i> Department Dashboard
+        </h2>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+            <h5 class="text-dark fw-semibold"><i class="bi bi-gear-fill"></i> Manage Departments</h5>
+            <div>
+                <a href="{% url 'departments:create' %}" class="btn btn-primary text-white fw-semibold me-2 shadow-sm">
+
+                    <i class="bi bi-plus-circle"></i> New Department
+                </a>
+                <a href="{% url 'create_employee' %}" class="btn btn-success text-white fw-semibold shadow-sm">
+                    <i class="bi bi-person-plus"></i> Add Employee
+                </a>
+            </div>
+        </div>
+        
+        <div class="table-responsive rounded-4 shadow-sm overflow-hidden border border-secondary">
+            <table class="table table-hover align-middle text-center bg-white text-dark rounded-4 border border-secondary">
+                <thead class="bg-warning text-dark fw-bold border border-secondary">
+                    <tr>
+                        <th class="border border-secondary p-3"><i class="bi bi-hash"></i> ID</th>
+                        <th class="border border-secondary p-3"><i class="bi bi-building"></i> Department Name</th>
+                        <th class="border border-secondary p-3"><i class="bi bi-file-text"></i> Description</th>
+                        <th class="border border-secondary p-3"><i class="bi bi-tools"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr class="border border-secondary">
+                        <td class="fw-bold text-dark border border-secondary p-3">{{ department.dept_id }}</td>
+                        <td class="text-dark fw-semibold border border-secondary p-3">{{ department.dept_name }}</td>
+                        <td class="text-muted border border-secondary p-3">{{ department.description }}</td>
+                        <td class="border border-secondary p-3">
+                            <a href="{% url 'departments:update' department.dept_id %}" class="btn btn-outline-primary btn-sm fw-bold me-1 shadow-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'departments:delete' department.dept_id %}" 
+                               class="btn btn-outline-danger btn-sm fw-bold shadow-sm" onclick="return confirm('Are you sure you want to delete this department?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            <button type="button" class="btn btn-outline-info btn-sm fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#employeeModal{{ department.dept_id }}">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-muted py-4 border border-secondary">
+                            <i class="bi bi-exclamation-circle"></i> No departments found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% for department in departments %}
+<div class="modal fade" id="employeeModal{{ department.dept_id }}" tabindex="-1" aria-labelledby="employeeModalLabel{{ department.dept_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeModalLabel{{ department.dept_id }}">Employees in {{ department.dept_name }} ({{ department.employee_set.count }})</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in department.employee_set.all %}
+                        <tr>
+                            <td>{{ employee.full_name }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td>{{ employee.email }}</td>
+                            <td>{{ employee.phone }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

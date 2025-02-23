@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center text-primary">Search Results</h1>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    {% if departments %}
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Department Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr>
+                        <td class="text-center">{{ department.dept_id }}</td>
+                        <td>{{ department.dept_name }}</td>
+                        <td>{{ department.description }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'departments:update' department.dept_id %}" class="btn btn-sm btn-warning">
+
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="{% url 'departments:delete' department.dept_id %}" class="btn btn-sm btn-danger">
+
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center py-4">
+            <h4 class="mb-3">No departments found</h4>
+            <p>Try refining your search criteria.</p>
+        </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'departments:dashboard' %}" class="btn btn-secondary btn-lg">
+
+            <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Confirm Employee Deactivation</h1>
+<p>Are you sure you want to deactivate {{ employee.first_name }} {{ employee.last_name }}?</p>
+
+<div class="alert alert-warning">
+    <h4 class="alert-heading">Important Notice</h4>
+    <p>Deactivating this employee will:</p>
+    <ul>
+        <li>Mark the employee as inactive in the system</li>
+        <li>Remove them from their current department</li>
+    </ul>
+    <p class="mb-0">This action can be reversed by reactivating the employee later.</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirm Deactivation</button>
+    <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

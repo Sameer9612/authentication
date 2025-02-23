@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="card shadow-lg p-4 w-50" style="background: #fdfdfd; border: 1px solid #ddd;">
+        <h2 class="text-center mb-4 text-dark fw-bold bg-warning py-3 rounded-3">
+            <i class="bi bi-pencil-square"></i> {% if form.instance.dept_id %} Update {% else %} Create {% endif %} Department
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-dark">
+                    <i class="bi bi-card-heading"></i> Department Name
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text bg-warning text-dark"><i class="bi bi-building"></i></span>
+                    {{ form.dept_name }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-dark">
+                    <i class="bi bi-chat-left-text"></i> Description
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text bg-warning text-dark"><i class="bi bi-file-text"></i></span>
+                    {{ form.description }}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-success px-4 shadow-sm">
+                    <i class="bi bi-check-circle"></i> {% if form.instance.dept_id %} Update {% else %} Create {% endif %}
+                </button>
+                <a href="{% url 'departments:dashboard' %}" class="btn btn-secondary px-4 shadow-sm">
+
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+            </div>
+
+            {% if form.instance.dept_id %}
+            <div class="mt-3 text-muted text-center">
+                <small><i class="bi bi-calendar-event"></i> Created: {{ form.instance.created_at|date:"M d, Y H:i" }}</small>
+                {% if form.instance.updated_at %}
+                | <small><i class="bi bi-pencil"></i> Last Updated: {{ form.instance.updated_at|date:"M d, Y H:i" }}</small>
+                {% endif %}
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fdfdfd;
+    }
+
+    .input-group-text {
+        background: #ffc107;
+        color: #212529;
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #aaa;
+    }
+
+    .btn {
+        font-weight: 500;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
