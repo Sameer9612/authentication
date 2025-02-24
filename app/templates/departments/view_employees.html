@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Department Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">
+            <i class="bi bi-people-fill"></i> Employees in {{ department.dept_name }}
+        </h2>
+        <a href="{% url 'departments:dashboard' %}" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    {% if employees %}
+        <div class="table-responsive rounded shadow-sm">
+            <table class="table table-striped table-hover table-bordered align-middle">
+                <thead class="table-primary text-center sticky-top">
+                    <tr class="text-nowrap">
+                        <th class="p-3"><i class="bi bi-person-circle"></i> Name</th>
+                        <th class="p-3"><i class="bi bi-briefcase-fill"></i> Position</th>
+                        <th class="p-3"><i class="bi bi-envelope-at-fill"></i> Email</th>
+                        <th class="p-3"><i class="bi bi-telephone-fill"></i> Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr class="text-center align-middle">
+                        <td class="fw-semibold text-dark">
+                            <i class="bi bi-person"></i> {{ employee.full_name }}
+                        </td>
+                        <td class="text-muted">
+                            <i class="bi bi-briefcase"></i> {{ employee.position }}
+                        </td>
+                        <td class="text-primary">
+                            <i class="bi bi-envelope"></i> 
+                            <a href="mailto:{{ employee.email }}" class="text-decoration-none text-primary">
+                                {{ employee.email }}
+                            </a>
+                        </td>
+                        <td class="text-secondary">
+                            <i class="bi bi-telephone"></i> 
+                            <a href="tel:{{ employee.phone }}" class="text-decoration-none text-secondary">
+                                {{ employee.phone }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center shadow-sm p-3">
+            <i class="bi bi-info-circle"></i> No active employees in this department.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

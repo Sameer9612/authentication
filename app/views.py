@@ -11,8 +11,14 @@ def is_admin(user):
 @login_required
 @user_passes_test(is_admin)
 def department_dashboard(request):
-    departments = Department.objects.filter(status=True)
-    return render(request, 'departments/dashboard.html', {'departments': departments})
+    active_departments = Department.objects.filter(status=True)
+    inactive_departments = Department.objects.filter(status=False)
+    return render(request, 'departments/dashboard.html', {
+        'active_departments': active_departments,
+        'inactive_departments': inactive_departments
+    })
+
+
 
 @login_required
 @user_passes_test(is_admin)
@@ -66,7 +72,21 @@ def reassign_employees(request, dept_id):
 
 @login_required
 @user_passes_test(is_admin)
+def reactivate_department(request, dept_id):
+    """Reactivate a deactivated department"""
+    department = get_object_or_404(Department, dept_id=dept_id)
+    
+    if department.reactivate():
+        messages.success(request, f"Department '{department.dept_name}' has been reactivated successfully.")
+    else:
+        messages.warning(request, f"Department '{department.dept_name}' is already active.")
+    
+    return redirect('departments:dashboard')
+
+@login_required
+@user_passes_test(is_admin)
 def delete_department(request, dept_id):
+
     department = get_object_or_404(Department, dept_id=dept_id)
     if request.method == 'POST':
         if department.has_linked_employees():
@@ -142,3 +162,15 @@ def delete_employee(request, emp_id):
         messages.success(request, 'Employee deactivated successfully!')
         return redirect('employee_dashboard')
     return render(request, 'employees/confirm_delete.html', {'employee': employee})
+
+@login_required
+@user_passes_test(is_admin)
+def view_department_employees(request, dept_id):
+    """View employees in a specific department"""
+    department = get_object_or_404(Department, dept_id=dept_id)
+    employees = Employee.objects.filter(department=department, status=True)
+    
+    return render(request, 'departments/view_employees.html', {
+        'department': department,
+        'employees': employees
+    })

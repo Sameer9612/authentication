@@ -66,11 +66,16 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'departments:create' %}">
-
                             <i class="bi bi-building-add"></i> Create Department
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'employee_dashboard' %}">
+                            <i class="bi bi-people"></i> Employees
+                        </a>
+                    </li>
                 </ul>
+
 
                 <!-- Centered Search Bar -->
                 <div class="search-box">
@@ -128,6 +133,8 @@
                     <ul class="list-unstyled">
                         <li><a href="{% url 'departments:dashboard' %}" class="text-white">Dashboard</a></li>
                         <li><a href="{% url 'departments:create' %}" class="text-white">Create Department</a></li>
+                        <li><a href="{% url 'employee_dashboard' %}" class="text-white">Employees</a></li>
+
                     </ul>
                 </div>
                 <div class="col-md-4">
@@ -145,4 +152,3 @@
     </footer>
 </body>
 </html>
-

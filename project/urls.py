@@ -36,6 +36,8 @@ urlpatterns = [
 
     # Department URLs
     path('departments/', include('app.urls')),
+    path('reactivate/<int:dept_id>/', views.reactivate_department, name='reactivate_department'),
+
 
 
 
