@@ -3,6 +3,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Department, Employee
 from .forms import DepartmentForm, EmployeeForm
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset_form.html'
+    email_template_name = 'registration/password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
 
 def is_admin(user):
     return user.is_superuser
