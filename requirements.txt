@@ -31,7 +31,6 @@ PyGetWindow==0.0.9
 PyMsgBox==1.0.9
 pyOpenSSL==25.0.0
 pyperclip==1.9.0
-pypiwin32==223
 PyRect==0.2.0
 PyScreeze==1.0.1
 pyttsx3==2.98
