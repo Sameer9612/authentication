@@ -9,6 +9,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'uncomfortable-kellyann-xyz123abhi-058cea05.koyeb.app',]
 
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587  # Use 587 for TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'www.abhirajsingh18@gmail.com'  # User email
+EMAIL_HOST_PASSWORD = 'gnjixzyvwmejbhzi'  # App password
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,7 +30,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -30,8 +38,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-
 
 ROOT_URLCONF = 'project.urls'
 
@@ -87,14 +93,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'app/static'),
 ]
 
-
-
-
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 
 LOGGING = {
     'version': 1,

@@ -1,22 +1,16 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from django.contrib.auth import views as auth_views
-
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView
+from .views import CustomPasswordResetConfirmView, CustomPasswordResetCompleteView, CustomPasswordResetView
 
 app_name = 'departments'
 
 urlpatterns = [
     path('', views.department_dashboard, name='dashboard'),
-    path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
-    path('admin/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='admin_password_reset_done'),
-    path('admin/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='admin_password_reset_confirm'),
-    path('admin/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='admin_password_reset_complete'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
-
+    path('accounts/password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('create/', views.create_department, name='create'),
     path('update/<int:dept_id>/', views.update_department, name='update'),
     path('delete/<int:dept_id>/', views.delete_department, name='delete'),
