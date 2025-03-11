@@ -16,7 +16,7 @@
 5. [Frequently Asked Questions](#frequently-asked-questions)
 
 ## Introduction
-This guide provides instructions for using the Employee Management System to manage departments and employees effectively.
+This guide provides instructions for using the Employee Management System to manage departments and employees effectively. The system allows users to create, edit, and delete departments and employees, as well as search for specific records.
 
 ## Department Management
 
