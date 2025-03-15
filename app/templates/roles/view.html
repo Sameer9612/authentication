@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-primary"><i class="bi bi-person-badge"></i> Role Details</h2>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ role.role_name }}</h5>
+            <p class="card-text">{{ role.description }}</p>
+            <p class="card-text"><strong>Status:</strong> {{ 'Active' if role.status else 'Inactive' }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'update_role' role.role_id %}" class="btn btn-outline-primary">Edit</a>
+            <a href="{% url 'delete_role' role.role_id %}" class="btn btn-outline-danger">Deactivate</a>
+            <a href="{% url 'role_dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,33 +1,90 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Department, Employee
-from .forms import DepartmentForm, EmployeeForm
+from .models import Department, Employee, Role  
+from .forms import DepartmentForm, EmployeeForm, RoleForm  
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView
-
 from django.urls import reverse_lazy
+from django.db.models import CharField, Value
+from django.db.models.functions import Concat
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset_form.html'
     email_template_name = 'registration/password_reset_email.html'
     success_url = reverse_lazy('password_reset_complete')
 
-
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'registration/password_reset_confirm.html'
     success_url = reverse_lazy('password_reset_complete')
 
-
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'registration/password_reset_complete.html'
-
-
-
 
 def is_admin(user):
     return user.is_superuser
 
-# Department views
+# Role views
+@login_required
+@user_passes_test(is_admin)
+def role_dashboard(request):
+    all_roles = Role.objects.all()  # Fetch all roles
+    active_roles = all_roles.filter(status=True)  # Filter active roles
+    inactive_roles = all_roles.filter(status=False)  # Filter inactive roles
+
+    return render(request, 'roles/dashboard.html', {
+        'active_roles': active_roles,
+        'inactive_roles': inactive_roles
+    })
+
+@login_required
+@user_passes_test(is_admin)
+def create_role(request):
+    if request.method == 'POST':
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            # Include the selected position in the role name
+            position = form.cleaned_data.get('position')  # Get the selected position
+            role_name = form.cleaned_data.get('role_name')  # Get the role name
+            form.instance.role_name = f"{role_name} ({position})" if position else role_name
+            form.save()
+            messages.success(request, 'Role created successfully!')
+            return redirect('role_dashboard')
+        else:
+            # Log form errors
+            print(form.errors)  # Log the errors to the console for debugging
+    else:
+        form = RoleForm()
+    return render(request, 'roles/form.html', {'form': form})
+
+@login_required
+@user_passes_test(is_admin)
+def update_role(request, role_id):
+    role = get_object_or_404(Role, role_id=role_id)
+    if request.method == 'POST':
+        form = RoleForm(request.POST, instance=role)
+        if form.is_valid():
+            # Include the selected position in the role name
+            position = form.cleaned_data.get('position')  # Get the selected position
+            role_name = form.cleaned_data.get('role_name')  # Get the role name
+            form.instance.role_name = f"{role_name} ({position})" if position else role_name
+            form.save()
+            messages.success(request, 'Role updated successfully!')
+            return redirect('role_dashboard')
+    else:
+        form = RoleForm(instance=role)
+    return render(request, 'roles/form.html', {'form': form})
+
+@login_required
+@user_passes_test(is_admin)
+def delete_role(request, role_id):
+    role = get_object_or_404(Role, role_id=role_id)
+    if request.method == 'POST':
+        role.status = False  # Soft delete
+        role.save()
+        messages.success(request, 'Role deleted successfully!')
+        return redirect('role_dashboard')
+    return render(request, 'roles/confirm_delete.html', {'role': role})
+
 @login_required
 @user_passes_test(is_admin)
 def department_dashboard(request):
@@ -37,8 +94,6 @@ def department_dashboard(request):
         'active_departments': active_departments,
         'inactive_departments': inactive_departments
     })
-
-
 
 @login_required
 @user_passes_test(is_admin)
@@ -89,7 +144,6 @@ def reassign_employees(request, dept_id):
         'departments': departments
     })
 
-
 @login_required
 @user_passes_test(is_admin)
 def reactivate_department(request, dept_id):
@@ -106,7 +160,6 @@ def reactivate_department(request, dept_id):
 @login_required
 @user_passes_test(is_admin)
 def delete_department(request, dept_id):
-
     department = get_object_or_404(Department, dept_id=dept_id)
     if request.method == 'POST':
         if department.has_linked_employees():
@@ -137,6 +190,21 @@ def search_department(request):
     else:
         departments = Department.objects.filter(status=True)
     return render(request, 'departments/search_results.html', {'departments': departments})
+
+@login_required
+@user_passes_test(is_admin)
+def view_role(request, role_id):
+    role = get_object_or_404(Role, role_id=role_id)
+    return render(request, 'roles/view.html', {'role': role})
+
+@login_required
+@user_passes_test(is_admin)
+def reactivate_role(request, role_id):
+    role = get_object_or_404(Role, role_id=role_id)
+    role.status = True  # Reactivate the role
+    role.save()
+    messages.success(request, f"Role '{role.role_name}' has been reactivated successfully.")
+    return redirect('role_dashboard')
 
 # Employee views
 @login_required

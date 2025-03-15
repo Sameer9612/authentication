@@ -7,7 +7,7 @@ class Department(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
-    order = models.PositiveIntegerField(default=0)  # New field for sorting
+    order = models.PositiveIntegerField(default=0) 
 
     def __str__(self):
         return self.dept_name
@@ -28,6 +28,23 @@ class Department(models.Model):
         db_table = 'department'
         verbose_name = 'Department'
         verbose_name_plural = 'Departments'
+
+class Role(models.Model):
+    role_id = models.AutoField(primary_key=True)
+    role_name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        employee_positions = ", ".join([emp.position for emp in self.employee_set.all() if emp.position]) if hasattr(self, 'employee_set') else ''
+        return f"{self.role_name} ({employee_positions})" if employee_positions else self.role_name
+
+    class Meta:
+        db_table = 'roles'
+        verbose_name = 'Role'
+        verbose_name_plural = 'Roles'
 
 class Employee(models.Model):
     emp_id = models.AutoField(primary_key=True)

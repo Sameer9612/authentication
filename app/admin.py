@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Department, Employee
+from .models import Department, Employee, Role
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ('role_name', 'description', 'status')
+    list_filter = ('status',)
+    search_fields = ('role_name',)
+    ordering = ('role_name',)
+
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
