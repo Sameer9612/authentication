@@ -18,8 +18,8 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('emp_id', 'full_name', 'department', 'status', 'created_at', 'updated_at')
-    list_filter = ('department', 'status')
+    list_display = ('employee_id', 'full_name', 'department', 'created_at', 'updated_at')
+    list_filter = ('department',)
     search_fields = ('first_name', 'last_name')
     ordering = ('last_name', 'first_name')
     readonly_fields = ('created_at', 'updated_at')

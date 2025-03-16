@@ -126,7 +126,7 @@ def update_department(request, dept_id):
 @user_passes_test(is_admin)
 def reassign_employees(request, dept_id):
     department = get_object_or_404(Department, dept_id=dept_id)
-    employees = Employee.objects.filter(department=department, status=True)
+    employees = Employee.objects.filter(department=department)
     
     if request.method == 'POST':
         new_department_id = request.POST.get('new_department')
@@ -210,7 +210,8 @@ def reactivate_role(request, role_id):
 @login_required
 @user_passes_test(is_admin)
 def employee_dashboard(request):
-    employees = Employee.objects.filter(status=True)
+    employees = Employee.objects.all()
+
     return render(request, 'employees/dashboard.html', {'employees': employees})
 
 @login_required
@@ -222,14 +223,20 @@ def create_employee(request):
             form.save()
             messages.success(request, 'Employee created successfully!')
             return redirect('employee_dashboard')
+        else:
+            
+            for field, errors in form.errors.items():
+                for error in errors:
+                    print(f"Error in {field}: {error}")  
     else:
         form = EmployeeForm()
+
     return render(request, 'employees/form.html', {'form': form})
 
 @login_required
 @user_passes_test(is_admin)
 def update_employee(request, emp_id):
-    employee = get_object_or_404(Employee, emp_id=emp_id)
+    employee = get_object_or_404(Employee, employee_id=emp_id)
     if request.method == 'POST':
         form = EmployeeForm(request.POST, instance=employee)
         if form.is_valid():
@@ -243,11 +250,10 @@ def update_employee(request, emp_id):
 @login_required
 @user_passes_test(is_admin)
 def delete_employee(request, emp_id):
-    employee = get_object_or_404(Employee, emp_id=emp_id)
+    employee = get_object_or_404(Employee, employee_id=emp_id)  
     if request.method == 'POST':
-        employee.status = False
-        employee.save()
-        messages.success(request, 'Employee deactivated successfully!')
+        employee.delete()  
+        messages.success(request, 'Employee deleted successfully!')
         return redirect('employee_dashboard')
     return render(request, 'employees/confirm_delete.html', {'employee': employee})
 
@@ -256,7 +262,7 @@ def delete_employee(request, emp_id):
 def view_department_employees(request, dept_id):
     """View employees in a specific department"""
     department = get_object_or_404(Department, dept_id=dept_id)
-    employees = Employee.objects.filter(department=department, status=True)
+    employees = Employee.objects.filter(department=department)  
     
     return render(request, 'departments/view_employees.html', {
         'department': department,

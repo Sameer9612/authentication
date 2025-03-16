@@ -1,53 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Include Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<div class="container-fluid mt-4 px-5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="container mt-4">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary fw-bold">
             <i class="fas fa-users"></i> Employee Management
         </h2>
-        <a href="{% url 'create_employee' %}" class="btn btn-outline-success fw-semibold">
+        <a href="{% url 'create_employee' %}" class="btn btn-success fw-semibold shadow-sm px-4 py-2 rounded-pill">
             <i class="fas fa-user-plus"></i> Add Employee
         </a>
     </div>
 
     <!-- Employee Table -->
-    <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-primary text-center">
-                <tr class="text-nowrap">
-                    <th style="width: 10%;"><i class="fas fa-id-badge"></i> ID</th>
-                    <th style="width: 35%;"><i class="fas fa-user"></i> Name</th>
-                    <th style="width: 35%;"><i class="fas fa-building"></i> Department</th>
-                    <th style="width: 20%;"><i class="fas fa-cogs"></i> Actions</th>
+    <div class="table-responsive rounded shadow-sm bg-white p-4 w-100">
+        <table class="table table-hover align-middle text-center table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th class="p-3"><i class="fas fa-id-badge"></i> ID</th>
+                    <th class="p-3"><i class="fas fa-user"></i> Name</th>
+                    <th class="p-3"><i class="fas fa-envelope"></i> Email</th>
+                    <th class="p-3"><i class="fas fa-phone"></i> Mobile</th>
+                    <th class="p-3"><i class="fas fa-calendar-alt"></i> Date of Joining</th>
+                    <th class="p-3"><i class="fas fa-briefcase"></i> Role</th>
+                    <th class="p-3"><i class="fas fa-user-tie"></i> Reporting Manager</th>
+                    <th class="p-3"><i class="fas fa-calendar-plus"></i> Created At</th>
+                    <th class="p-3"><i class="fas fa-calendar-check"></i> Updated At</th>
+                    <th class="p-3"><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for employee in employees %}
-                <tr class="text-center">
-                    <td class="fw-bold text-primary">#{{ employee.emp_id }}</td>
-                    <td class="fw-semibold">
-                        <i class="fas fa-user-circle"></i> {{ employee.first_name }} {{ employee.last_name }}
-                    </td>
-                    <td class="text-muted">
-                        <i class="fas fa-sitemap"></i> {{ employee.department.dept_name }}
+                <tr class="bg-light">
+                    <td class="fw-bold text-primary">#{{ employee.employee_id }}</td>
+                    <td class="fw-semibold text-dark">{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>
+                        <a href="mailto:{{ employee.email }}" class="text-decoration-none text-primary fw-bold">
+                            <i class="fas fa-envelope text-primary"></i> {{ employee.email }}
+                        </a>
                     </td>
                     <td>
-                        <a href="{% url 'update_employee' employee.emp_id %}" class="btn btn-sm btn-outline-warning">
-                            <i class="fas fa-edit"></i> Edit
+                        <a href="tel:{{ employee.mobile }}" class="text-decoration-none text-success fw-bold">
+                            <i class="fas fa-phone text-success"></i> {{ employee.mobile }}
                         </a>
-                        <a href="{% url 'delete_employee' employee.emp_id %}" class="btn btn-sm btn-outline-danger">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </a>
+                    </td>
+                    <td class="text-muted">{{ employee.date_of_joining }}</td>
+                    <td class="text-muted">
+                        {% if employee.role_id %}
+                            {{ employee.role_id.role_name }}
+                        {% else %}
+                            <span class="text-danger">No Role</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">
+                        {% if employee.reporting_manager_id %}
+                            {{ employee.reporting_manager_id.full_name }}
+                        {% else %}
+                            <span class="text-danger">No Manager</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">{{ employee.created_at }}</td>
+                    <td class="text-muted">{{ employee.updated_at }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{% url 'update_employee' employee.employee_id %}" class="btn btn-warning text-white btn-sm rounded-pill px-3">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{% url 'delete_employee' employee.employee_id %}" class="btn btn-danger text-white btn-sm rounded-pill px-3">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="text-center text-muted">
+                    <td colspan="10" class="text-center text-muted p-4 bg-light rounded">
                         <i class="fas fa-exclamation-circle"></i> No employees found.
                     </td>
                 </tr>

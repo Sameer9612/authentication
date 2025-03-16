@@ -47,16 +47,20 @@ class Role(models.Model):
         verbose_name_plural = 'Roles'
 
 class Employee(models.Model):
-    emp_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
-    position = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField(max_length=100, null=True, blank=True)
-    phone = models.CharField(max_length=15, null=True, blank=True)
-    status = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    employee_id = models.AutoField(primary_key=True)  
+    first_name = models.CharField(max_length=100)  
+    username = models.CharField(max_length=100, null=True)  
+    password = models.CharField(max_length=100, null=True)  
+    last_name = models.CharField(max_length=100)  
+    email = models.CharField(max_length=100, null=True)  
+    mobile = models.CharField(max_length=100)  
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)  
+    role_id = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, related_name='role_employees')  
+    reporting_manager_id = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='reporting_employees')  
+    position = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)  
+    date_of_joining = models.DateField(null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True)  
 
     @property
     def full_name(self):

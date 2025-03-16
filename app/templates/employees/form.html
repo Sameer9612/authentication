@@ -26,13 +26,25 @@
                 </div>
                 <div class="text-danger">{{ form.last_name.errors }}</div>
             </div>
-            
+
             <div class="mb-3">
-                <label class="form-label fw-bold">{{ form.position.label }}</label>
-                {{ form.position|add_class:"form-select" }}
-                <div class="text-danger">{{ form.position.errors }}</div>
+                <label class="form-label fw-bold">{{ form.username.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    {{ form.username|add_class:"form-control"|attr:"placeholder:Enter username" }}
+                </div>
+                <div class="text-danger">{{ form.username.errors }}</div>
             </div>
-            
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.password.label }}</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    {{ form.password|add_class:"form-control"|attr:"placeholder:Enter password" }}
+                </div>
+                <div class="text-danger">{{ form.password.errors }}</div>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label fw-bold">{{ form.email.label }}</label>
                 <div class="input-group">
@@ -41,22 +53,46 @@
                 </div>
                 <div class="text-danger">{{ form.email.errors }}</div>
             </div>
-            
+
             <div class="mb-3">
-                <label class="form-label fw-bold">{{ form.phone.label }}</label>
+                <label class="form-label fw-bold">{{ form.mobile.label }}</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                    {{ form.phone|add_class:"form-control"|attr:"placeholder:Enter phone number" }}
+                    <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                    {{ form.mobile|add_class:"form-control"|attr:"placeholder:Enter mobile number" }}
                 </div>
-                <div class="text-danger">{{ form.phone.errors }}</div>
+                <div class="text-danger">{{ form.mobile.errors }}</div>
             </div>
-            
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.role_id.label }}</label>
+                {{ form.role_id|add_class:"form-select" }}
+                <div class="text-danger">{{ form.role_id.errors }}</div>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label fw-bold">{{ form.department.label }}</label>
                 {{ form.department|add_class:"form-select" }}
                 <div class="text-danger">{{ form.department.errors }}</div>
             </div>
-            
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.reporting_manager_id.label }}</label>
+                {{ form.reporting_manager_id|add_class:"form-select" }}
+                <div class="text-danger">{{ form.reporting_manager_id.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.position.label }}</label>
+                {{ form.position|add_class:"form-select" }}
+                <div class="text-danger">{{ form.position.errors }}</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">{{ form.date_of_joining.label }}</label>
+                {{ form.date_of_joining|add_class:"form-control" }}
+                <div class="text-danger">{{ form.date_of_joining.errors }}</div>
+            </div>
+
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Save</button>
                 <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Cancel</a>

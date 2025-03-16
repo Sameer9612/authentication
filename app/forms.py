@@ -46,6 +46,10 @@ class RoleForm(forms.ModelForm):
         }
 
 class EmployeeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EmployeeForm, self).__init__(*args, **kwargs)
+        self.fields['reporting_manager_id'].queryset = Employee.objects.all()  
+
     POSITION_CHOICES = [
         ('', 'Select a position'),
         ('Accountant', 'Accountant'),
@@ -62,7 +66,27 @@ class EmployeeForm(forms.ModelForm):
     
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'department', 'position', 'email', 'phone']
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'password',
+            'email',
+            'mobile',
+            'department',
+            'role_id',
+            'reporting_manager_id',
+            'date_of_joining'
+        ]
+
+        widgets = {
+            'department': forms.Select(attrs={'class': 'form-control'}),
+            'role_id': forms.Select(attrs={'class': 'form-control'}),
+            'reporting_manager_id': forms.Select(attrs={'class': 'form-control', 'required': False}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'date_of_joining': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Select date'}),
+        }
+
 
         widgets = {
             'department': forms.Select(attrs={'class': 'form-control'})
@@ -71,3 +95,4 @@ class EmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['department'].queryset = Department.objects.filter(status=True)
+        self.fields['role_id'].queryset = Role.objects.all()
