@@ -162,20 +162,27 @@ def reactivate_department(request, dept_id):
 def delete_department(request, dept_id):
     department = get_object_or_404(Department, dept_id=dept_id)
     if request.method == 'POST':
+        # Debugging messages to log the status and linked employees
+        print(f"Department Status: {department.status}")
+        print(f"Linked Employees Count: {department.employee_set.filter(status=True).count()}")
+
         if department.has_linked_employees():
             messages.error(request, 
-                'Cannot deactivate department. There are active employees linked to this department. '
-                'Please reassign them to another department first using the Employee Management section.'
+                'Cannot deactivate department. There are active employees linked to this department. Please reassign them to another department first using the Employee Management section.'
             )
+
         else:
             department.status = False
             department.save()
-            messages.success(request, 'Department deactivated successfully!')
+            messages.success(request, f'Department "{department.dept_name}" has been deactivated successfully!')
+
         return redirect('departments:dashboard')
+    
+    # Render the confirmation page
     return render(request, 'departments/confirm_delete.html', {
         'department': department,
         'has_linked_employees': department.has_linked_employees(),
-        'linked_employee_count': department.employee_set.count
+        'linked_employee_count': department.employee_set.count()
     })
 
 @login_required
@@ -224,7 +231,6 @@ def create_employee(request):
             messages.success(request, 'Employee created successfully!')
             return redirect('employee_dashboard')
         else:
-            
             for field, errors in form.errors.items():
                 for error in errors:
                     print(f"Error in {field}: {error}")  

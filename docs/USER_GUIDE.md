@@ -12,11 +12,15 @@
    - [Editing Employee Information](#editing-employee-information)
    - [Viewing Employee Details](#viewing-employee-details)
    - [Deleting an Employee](#deleting-an-employee)
-4. [Search Functionality](#search-functionality)
-5. [Frequently Asked Questions](#frequently-asked-questions)
+4. [Role Management](#role-management)
+   - [Creating a Role](#creating-a-role)
+   - [Editing a Role](#editing-a-role)
+   - [Deleting a Role](#deleting-a-role)
+5. [Search Functionality](#search-functionality)
+6. [Frequently Asked Questions](#frequently-asked-questions)
 
 ## Introduction
-This guide provides instructions for using the Employee Management System to manage departments and employees effectively. The system allows users to create, edit, and delete departments and employees, as well as search for specific records.
+This guide provides instructions for using the Employee Management System to manage departments, roles, and employees effectively. The system allows users to create, edit, and delete departments and employees, as well as search for specific records and manage roles. Recent updates include the ability to assign positions to roles and employees, enhancing the management capabilities.
 
 ## Department Management
 
@@ -51,13 +55,15 @@ Note: Departments with active employees cannot be deleted
    - Last Name
    - Department (select from dropdown)
    - Position (select from dropdown)
+   - Reporting Manager (select from dropdown)
    - Email
    - Phone
+   - Additional fields may be required based on the latest updates.
 4. Click "Save"
 
 ### Editing Employee Information
 1. From the Employee Dashboard, click the edit icon (pencil) next to the employee
-2. Make necessary changes
+2. Make necessary changes, including updating the position and reporting manager
 3. Click "Save"
 
 ### Viewing Employee Details
@@ -66,6 +72,26 @@ Note: Departments with active employees cannot be deleted
 
 ### Deleting an Employee
 1. From the Employee Dashboard, click the delete icon (trash) next to the employee
+2. Confirm the deletion
+
+## Role Management
+
+### Creating a Role
+1. Navigate to the Role Dashboard
+2. Click "New Role"
+3. Fill in the form:
+   - Role Name (select from dropdown)
+   - Position (select from dropdown)
+   - Description
+4. Click "Save"
+
+### Editing a Role
+1. From the Role Dashboard, click the edit icon (pencil) next to the role
+2. Make necessary changes
+3. Click "Save"
+
+### Deleting a Role
+1. From the Role Dashboard, click the delete icon (trash) next to the role
 2. Confirm the deletion
 
 ## Search Functionality

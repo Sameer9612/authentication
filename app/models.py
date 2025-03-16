@@ -14,7 +14,8 @@ class Department(models.Model):
 
     def has_linked_employees(self):
         """Check if there are any employees linked to this department"""
-        return self.employee_set.filter(status=True).exists()
+        return self.employee_set.exists()
+
 
     def reactivate(self):
         """Reactivate a deactivated department"""
@@ -48,6 +49,8 @@ class Role(models.Model):
 
 class Employee(models.Model):
     employee_id = models.AutoField(primary_key=True)  
+    status = models.BooleanField(default=True)  # Indicates if the employee is active
+
     first_name = models.CharField(max_length=100)  
     username = models.CharField(max_length=100, null=True)  
     password = models.CharField(max_length=100, null=True)  
